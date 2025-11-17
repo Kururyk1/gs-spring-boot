@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     stages {
+
         stage('Clone repo') {
             steps {
-                git 'https://github.com/Kururyk1/gs-spring-boot.git'
+                git branch: 'main', url: 'https://github.com/Kururyk1/gs-spring-boot.git'
             }
         }
 
@@ -24,5 +25,3 @@ pipeline {
         }
     }
 }
-
-                                                                                
