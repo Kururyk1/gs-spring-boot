@@ -1,7 +1,7 @@
 pipeline {
     agent any
-
-  environment {
+    
+environment {
     NEXUS_REPO = "http://localhost:8081/repository/r-maven/"
     NEXUS_CREDENTIALS = credentials('nexus-admin')
 }
