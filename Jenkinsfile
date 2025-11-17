@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        NEXUS_REPO = "http://localhost:8081/repository/r-maven/"
+        NEXUS_CREDENTIALS = credentials('nexus-admin')
+    }
+
     stages {
 
         stage('Clone repo') {
@@ -18,14 +23,32 @@ pipeline {
                 }
             }
         }
+
+        stage('Upload to Nexus') {
+            steps {
+                script {
+                    def jarFile = sh(
+                        script: "ls complete/target/*.jar",
+                        returnStdout: true
+                    ).trim()
+
+                    sh """
+                    curl -v -u ${NEXUS_CREDENTIALS_USR}:${NEXUS_CREDENTIALS_PSW} \
+                    --upload-file ${jarFile} \
+                    ${NEXUS_REPO}
+                    """
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo "BUILD SUCCESS – JAR CREATED!"
+            echo "ARTIFACT UPLOADED TO NEXUS SUCCESSFULLY!"
         }
         failure {
-            echo "BUILD FAILED"
+            echo "UPLOAD FAILED — CHECK LOGS"
         }
     }
 }
+
