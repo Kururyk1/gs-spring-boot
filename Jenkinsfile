@@ -11,7 +11,7 @@ pipeline {
 
         stage('Build Spring Boot app') {
             steps {
-                sh './gradlew clean build'
+                sh 'mvn clean package'
             }
         }
     }
@@ -25,3 +25,4 @@ pipeline {
         }
     }
 }
+
