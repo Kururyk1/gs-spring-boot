@@ -11,7 +11,9 @@ pipeline {
 
         stage('Build Spring Boot app') {
             steps {
-                sh 'mvn clean package'
+                withMaven(maven: 'maven') {
+                    sh 'mvn clean package'
+                }
             }
         }
     }
@@ -25,4 +27,3 @@ pipeline {
         }
     }
 }
-
