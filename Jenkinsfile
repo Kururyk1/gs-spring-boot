@@ -1,11 +1,10 @@
 pipeline {
     agent any
-    
-environment {
-    NEXUS_REPO = "http://localhost:8081/repository/r-maven/"
-    NEXUS_CREDENTIALS = credentials('nexus-admin')
-}
 
+    environment {
+        NEXUS_REPO = "http://localhost:8081/repository/r-maven/"
+        NEXUS_CREDENTIALS = credentials('nexus-admin')
+    }
 
     stages {
 
@@ -17,7 +16,7 @@ environment {
 
         stage('Build Spring Boot app') {
             steps {
-                dir('complete') {
+                dir('initial') {   // <<--- IMPORTANT FIX
                     withMaven(maven: 'maven') {
                         sh 'mvn clean package'
                     }
@@ -29,7 +28,7 @@ environment {
             steps {
                 script {
                     def jarFile = sh(
-                        script: "ls complete/target/*.jar",
+                        script: "ls initial/target/*.jar",
                         returnStdout: true
                     ).trim()
 
